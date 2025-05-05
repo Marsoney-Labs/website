@@ -19,11 +19,36 @@
         </ul>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Carousel -->
     <section id="home" class="hero">
-        <h1>Mastery Starts Here</h1>
-        <p>Empowering Bungoma youth with real-world tech skills, creative problem-solving, and a sense of citizenship.</p>
-        <a href="#courses" class="cta-button">Explore Courses</a>
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="images/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="carousel">
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-slide">
+                    <h1>Mastery Starts Here</h1>
+                    <p>Empowering Bungoma youth with real-world tech skills, creative problem-solving, and a sense of citizenship.</p>
+                    <a href="#courses" class="cta-button">Explore Courses</a>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <h1>Unlock Your Potential</h1>
+                    <p>Learn cutting-edge tech skills to build a brighter future.</p>
+                    <a href="#courses" class="cta-button">Start Learning</a>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <h1>Join Our Community</h1>
+                    <p>Connect with like-minded learners and grow together.</p>
+                    <a href="#contact" class="cta-button">Get Involved</a>
+                </div>
+            </div>
+            <button class="carousel-arrow left-arrow">&larr;</button>
+            <button class="carousel-arrow right-arrow">&rarr;</button>
+        </div>
     </section>
 
     <!-- About Us Section -->
@@ -140,7 +165,7 @@
                 <a href="#home">Back to Top</a>
             </div>
         </div>
-        <p>&copy; 2025 Marsoney Labs. All rights reserved.</p>
+        <p>© 2025 Marsoney Labs. All rights reserved.</p>
     </footer>
 
     <script src="script.js"></script>
