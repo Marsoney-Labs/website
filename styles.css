@@ -109,6 +109,7 @@ body {
 .cta-button {
     background: #3533cd;
     color: #f5f5f5;
+    margin-top: 2rem;
     padding: 0.8rem 1.5rem;
     text-decoration: none;
     border-radius: 5px;
@@ -189,6 +190,7 @@ body {
 .courses {
     padding: 4rem 2rem;
     text-align: center;
+    background: linear-gradient(45deg, #0c0b5a, #1c0425);
 }
 
 .courses h2 {
@@ -204,7 +206,7 @@ body {
 .course-cards {
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 10rem;
     flex-wrap: wrap;
 }
 
@@ -267,13 +269,14 @@ body {
 
 .minis-card h3 {
     font-size: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 /* Testimonials Section */
 .testimonials {
     padding: 4rem 2rem;
     text-align: center;
+    background: linear-gradient(45deg, #0c0b5a, #1c0425);
 }
 
 .testimonials h2 {
@@ -285,6 +288,11 @@ body {
 .contact {
     padding: 4rem 2rem;
     text-align: center;
+    background: #e0e0e0;
+    color: #000;
+
+
+    
 }
 
 .contact h2 {
