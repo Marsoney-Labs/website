@@ -26,68 +26,98 @@ document.querySelector('.contact-form').addEventListener('submit', function (e) 
 });
 
 // Carousel logic for infinite scrolling
-const carousel = document.querySelector('.carousel-inner');
-const slides = document.querySelectorAll('.carousel-slide');
-const totalSlides = slides.length;
-let currentIndex = 1; // Start at the first real slide (after cloned last slide)
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('.carousel-inner');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
+    let isTransitioning = false;
 
-// Clone first and last slides for infinite effect
-const firstSlideClone = slides[0].cloneNode(true);
-const lastSlideClone = slides[totalSlides - 1].cloneNode(true);
-carousel.appendChild(firstSlideClone);
-carousel.insertBefore(lastSlideClone, slides[0]);
-
-// Update carousel width and initial position
-carousel.style.width = `${(totalSlides + 2) * 100}%`;
-carousel.style.transform = `translateX(-${currentIndex * 100 / (totalSlides + 2)}%)`;
-
-// Handle arrow clicks
-document.querySelector('.right-arrow').addEventListener('click', () => {
-    currentIndex++;
-    updateCarousel();
-});
-
-document.querySelector('.left-arrow').addEventListener('click', () => {
-    currentIndex--;
-    updateCarousel();
-});
-
-// Handle swipe gestures
-let touchStartX = 0;
-let touchEndX = 0;
-
-carousel.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-});
-
-carousel.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchStartX - touchEndX > 50) {
-        currentIndex++; // Swipe left
-        updateCarousel();
-    } else if (touchEndX - touchStartX > 50) {
-        currentIndex--; // Swipe right
-        updateCarousel();
+    // Set up initial positioning
+    function setupCarousel() {
+        // Set the width of the carousel container
+        carousel.style.width = `${totalSlides * 100}%`;
+        
+        // Set the width of each slide
+        slides.forEach(slide => {
+            slide.style.width = `${100 / totalSlides}%`;
+        });
+        
+        // Set initial position
+        updateCarouselPosition();
     }
-});
 
-// Update carousel position and handle infinite loop
-function updateCarousel() {
-    carousel.style.transition = 'transform 0.5s ease';
-    carousel.style.transform = `translateX(-${currentIndex * 100 / (totalSlides + 2)}%)`;
-
-    // Reset position for infinite loop
-    if (currentIndex === totalSlides + 1) {
-        setTimeout(() => {
-            carousel.style.transition = 'none';
-            currentIndex = 1;
-            carousel.style.transform = `translateX(-${currentIndex * 100 / (totalSlides + 2)}%)`;
-        }, 500);
-    } else if (currentIndex === 0) {
-        setTimeout(() => {
-            carousel.style.transition = 'none';
-            currentIndex = totalSlides;
-            carousel.style.transform = `translateX(-${currentIndex * 100 / (totalSlides + 2)}%)`;
-        }, 500);
+    // Update the carousel position based on currentIndex
+    function updateCarouselPosition() {
+        carousel.style.transform = `translateX(-${currentIndex * (100 / totalSlides)}%)`;
     }
-}
+
+    // Handle carousel slide transitions
+    function goToSlide(index) {
+        if (isTransitioning) return;
+        
+        isTransitioning = true;
+        currentIndex = index;
+        
+        // Ensure index is within bounds (circular)
+        if (currentIndex < 0) {
+            currentIndex = totalSlides - 1;
+        } else if (currentIndex >= totalSlides) {
+            currentIndex = 0;
+        }
+        
+        updateCarouselPosition();
+        
+        // Reset transitioning flag after animation completes
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500); // Match this with the CSS transition time
+    }
+
+    // Handle arrow clicks
+    document.querySelector('.right-arrow').addEventListener('click', () => {
+        goToSlide(currentIndex + 1);
+    });
+
+    document.querySelector('.left-arrow').addEventListener('click', () => {
+        goToSlide(currentIndex - 1);
+    });
+
+    // Handle swipe gestures
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carousel.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    carousel.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 50) {
+            goToSlide(currentIndex + 1); // Swipe left
+        } else if (touchEndX - touchStartX > 50) {
+            goToSlide(currentIndex - 1); // Swipe right
+        }
+    });
+
+    // Auto-advance carousel
+    function startAutoSlide() {
+        return setInterval(() => {
+            goToSlide(currentIndex + 1);
+        }, 5000); // Change slide every 5 seconds
+    }
+
+    let autoSlideInterval = startAutoSlide();
+
+    // Pause auto-slide on hover
+    carousel.addEventListener('mouseenter', () => {
+        clearInterval(autoSlideInterval);
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+        autoSlideInterval = startAutoSlide();
+    });
+
+    // Initialize carousel
+    setupCarousel();
+});
